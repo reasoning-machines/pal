@@ -22,11 +22,13 @@ from pal import interface
 from pal.prompt import math_prompts
 
 
-DATA_PATH = 'data/gsm.jsonl'
+DATA_PATH = 'datasets/gsm.jsonl'
 OUTPUT_PATH = f'eval_results/gsm.jsonl'
 
 
 parser = argparse.ArgumentParser()
+parser.add_argument('--majority_at', default=None, type=int)
+parser.add_argument('--temperature', default=0.0, type=float)
 parser.add_argument('--append', action='store_true')
 parser.add_argument('--verbose', action='store_true')
 args = parser.parse_args()
@@ -55,10 +57,11 @@ with open(OUTPUT_PATH, 'a' if args.append else 'w') as f:
         result = copy.copy(x)
         
         try:
-            ans = itf.run(math_prompts.MATH_PROMPT.format(question=question))
+            ans = itf.run(math_prompts.MATH_PROMPT.format(question=question), majority_at=args.majority_at, temperature=args.temperature)
             ans = float(ans)
             score = 1 if abs(ans - x['target']) < 1e-3 else 0
-        except:
+        except Exception as e:
+            print(e)
             ans = ''
             score = 0
         scores.append(score)

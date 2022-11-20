@@ -19,7 +19,7 @@ from typing import Any, Callable, List, Optional
 
 from .runtime import GenericRuntime
 from .backend import call_gpt
-
+from collections import Counter
 
 class timeout:
     def __init__(self, seconds=1, error_message='Timeout'):
@@ -58,8 +58,8 @@ class TextInterface:
         last_line = gen.strip().split('\n')[-1]
         return last_line[len(self.answer_prefix):].strip()
     
-    def run(self, prompt):
-        gen = call_gpt(prompt, model=self.model, stop=self.stop, max_tokens=512)
+    def run(self, prompt, temperature=0.0):
+        gen = call_gpt(prompt, model=self.model, stop=self.stop, max_tokens=512, temperature=temperature)
         self.history.append(gen)
         return self.extract_answer(gen)
         
@@ -89,15 +89,16 @@ class ProgramInterface:
     def clear_history(self):
         self.history = []
     
-    def process_generation_to_code(self, gen: str):
-        return gen.split('\n')
+    def process_generation_to_code(self, gens: List[str]):
+        return [g.split('\n') for g in gens]
     
-    def generate(self, prompt: str):
-        gen = call_gpt(prompt, model=self.model, stop=self.stop, max_tokens=512)
+    def generate(self, prompt: str, majority_at: int =None, temperature: float =0.0):
+        gens = call_gpt(prompt, model=self.model, stop=self.stop, max_tokens=512, majority_at=majority_at, temperature=temperature)
         if self.verbose:
-            print(gen)
-        self.code = self.process_generation_to_code(gen)
-        self.history.append(gen)
+            print(gens)
+        code = self.process_generation_to_code(gens)
+        self.history.append(gens)
+        return code
     
     def execute(self, code: Optional[List[str]] = None):
         code = code if code else self.code
@@ -117,7 +118,12 @@ class ProgramInterface:
             self.runtime.exec_code('\n'.join(code[:-1]))
             return self.runtime.eval_code(code[-1])
     
-    def run(self, prompt: str, time_out: float =10):
-        self.generate(prompt)
-        with timeout(time_out):
-            return self.execute()
+    def run(self, prompt: str, time_out: float =10, majority_at: int =None, temperature: float =0.0):
+        code_snippets = self.generate(prompt, majority_at, temperature)
+        results = []
+        for code in code_snippets:
+            with timeout(time_out):
+                exec_result = self.execute(code)
+                results.append(exec_result)
+        counter = Counter(results)
+        return counter.most_common(1)[0][0]
