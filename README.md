@@ -22,8 +22,8 @@ from pal.prompt import math_prompts
 
 interface = interface.ProgramInterface(
   model='code-davinci-002',
-	stop='\n\n\n', # stop generation str for Codex API
-	get_answer_expr='solution()' # python expression evaluated after generated code to obtain answer 
+  stop='\n\n\n', # stop generation str for Codex API
+  get_answer_expr='solution()' # python expression evaluated after generated code to obtain answer 
 )
 
 question = 'xxxxx'
@@ -37,5 +37,6 @@ User should set `get_answer_expr` based on the prompt.
 ## Inference Loop
 We provide simple inference loops in the `scripts/` folder.
 ```
+mkdir eval_results
 python scripts/{colored_objects|gsm|date_understanding|penguin}_eval.py
 ``` 
