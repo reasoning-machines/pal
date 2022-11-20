@@ -22,7 +22,7 @@ from pal import interface, runtime
 from pal.prompt import colored_object_prompt
 
 
-DATA_PATH = 'data/reasoning_about_colored_objects.json'
+DATA_PATH = 'datasets/reasoning_about_colored_objects.json'
 OUTPUT_PATH = 'eval_results/reasoning_about_colored_objects.jsonl'
 
 

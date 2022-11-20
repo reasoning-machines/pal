@@ -22,7 +22,7 @@ from pal import interface
 from pal.prompt import math_prompts
 
 
-DATA_PATH = 'data/gsm.jsonl'
+DATA_PATH = 'datasets/gsm.jsonl'
 OUTPUT_PATH = f'eval_results/gsm.jsonl'
 
 

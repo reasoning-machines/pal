@@ -22,7 +22,7 @@ from pal import interface, runtime
 from pal.prompt import date_understanding_prompt
 
 
-DATA_PATH = 'data/date_understanding.json'
+DATA_PATH = 'datasets/date_understanding.json'
 OUTPUT_PATH = 'eval_results/date_understanding.jsonl'
 
 

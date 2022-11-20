@@ -22,7 +22,7 @@ from pal import interface
 from pal.prompt import penguin_prompt
 
 
-DATA_PATH = 'data/penguins_in_a_table.json'
+DATA_PATH = 'datasets/penguins_in_a_table.json'
 OUTPUT_PATH = 'eval_results/penguins_in_a_table.jsonl'
 
 parser = argparse.ArgumentParser()
