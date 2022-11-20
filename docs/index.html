@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="PAL generates a Python program to solve a task from its natural language description.">
+  <meta name="keywords" content="Chain of thought, few-shot prompting, codex, gpt3, reasoning, program-aided lm, symbolic reasoning">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PAL: Program-aided Language Models</title>
+
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">PAL: Program-aided Language Models</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="">Luyu Gao</a><sup>*1</sup>,</span>
+            <span class="author-block">
+              <a href="">Aman Madaan</a><sup>*1</sup>,</span>
+            <span class="author-block">
+              <a href="">Shuyan Zhou</a><sup>*1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="">Uri Alon</a><sup>1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="">Pengfei Liu</a><sup>1,2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="">Yiming Yang</a><sup>1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="">Jamie Callan</a><sup>1</sup>
+            </span>
+            <span class="author-block">
+              <a href="">Graham Neubig</a><sup>1,2</sup>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>Language Technologies Institute, School of CS, Carnegie Mellon University</span>
+            <br/>
+            <span class="author-block"><sup>2</sup>Inspired Cognition, <sup>*</sup>Equal contribution</span>
+
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="https://arxiv.org/pdf/2011.12948"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2011.12948"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="fas fa-terminal"></i>
+                  </span>
+                  <span>Colab</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/google/nerfies"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+              <!-- Dataset Link. -->
+              <span class="link-block">
+                <a href="https://github.com/google/nerfies/releases/tag/0.1"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="far fa-file"></i>
+                  </span>
+                  <span>Data</span>
+                  </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <figure class="image is-8by6">
+        <img src="static/images/pal_overview.png">
+      </figure>
+      <h2 class="subtitle has-text-centered">
+        <span class="pal">PAL</span> generates a Python program to solve a task from its natural language description.
+      </h2>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Large language models (LLMs) have recently demonstrated an impressive ability to perform arithmetic and symbolic reasoning tasks when provided with a few examples at test time (“few-shot prompting”). Much of this success can be attributed to prompting methods for reasoning, such as “chain-of-thought”, employ LLMs for both understanding the problem description by decomposing it into steps, as well as solving each step of the problem.
+            
+          </p>
+          
+          <p> While LLMs seem to be adept at this sort of step-by-step decomposition, LLMs often make logical and arithmetic mistakes in the solution part, even when the problem is correctly decomposed. In this paper, we present <b>Program-Aided Language models (<span class="pal">PAL</span>)</b>: a new method that uses the LLM to read natural language problems and generate programs as the intermediate reasoning steps, but offloads the solution step to a programmatic runtime such as a Python interpreter. 
+          </p>  
+          
+          <p>With <span class="pal">PAL</span>, decomposing the natural language problem into runnable steps remains the only learning task for the LLM, while solving is delegated to the interpreter. We demonstrate this synergy between a neural LLM and a symbolic interpreter across 12 reasoning tasks from BIG-Bench Hard and other benchmarks, including mathematical reasoning, symbolic reasoning, and algorithmic problems.  In all these natural language reasoning tasks, generating code using an LLM and reasoning using a Python interpreter leads to more accurate results than much larger models, and we set new state-of-the-art results in all 12 benchmarks. For example, <span class="pal">PAL</span> using Codex achieves state-of-the-art few-shot accuracy on the GSM benchmark of math word problems when the model is allowed only a single decoding, surpassing PALM-540B with chain-of-thought prompting by absolute 8% .In three reasoning tasks from the BIG-Bench Hard benchmark, <span class="pal">PAL</span> outperforms CoT by 11%. On GSM-hard, a more challenging version of GSM that we create, <span class="pal">PAL</span> outperforms chain-of-thought by an absolute 40%.
+        </p>
+          
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Result Highlights</h2>
+        <div class="content has-text-justified">
+          <p>
+            <span class="pal">PAL</span> outperforms chain-of-thought on 12 benchmarks, including 3 from BIG-Bench Hard.
+        </p>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+<!-- <section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@article{park2021nerfies,
+  author    = {Park, Keunhong and Sinha, Utkarsh and Barron, Jonathan T. and Bouaziz, Sofien and Goldman, Dan B and Seitz, Steven M. and Martin-Brualla, Ricardo},
+  title     = {Nerfies: Deformable Neural Radiance Fields},
+  journal   = {ICCV},
+  year      = {2021},
+}</code></pre>
+  </div>
+</section> -->
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link"
+         href="">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            Template based on <a href="https://bulma.io/">Bulma</a>, adapted from <a href="http://nerfies.github.io/">Nerfies</a> by Keunhong Park et al.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
