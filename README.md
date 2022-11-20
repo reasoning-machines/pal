@@ -20,7 +20,7 @@ The core components of the `pal` package are the Interface classes. Specifically
 import pal
 from pal.prompt import math_prompts
 
-interface = interface.ProgramInterface(
+interface = pal.interface.ProgramInterface(
   model='code-davinci-002',
   stop='\n\n\n', # stop generation str for Codex API
   get_answer_expr='solution()' # python expression evaluated after generated code to obtain answer 
