@@ -44,6 +44,8 @@ mkdir eval_results
 python scripts/{colored_objects|gsm|date_understanding|penguin}_eval.py
 ``` 
 
+For running bulk inference, we used the generic prompting library [prompt-lib](https://github.com/madaan/prompt-lib) and recommend it for running CoT inferenence on all tasks used in our work.
+
 ## Results
 
 <img width="831" alt="image" src="https://user-images.githubusercontent.com/15002544/202954755-bf89aab6-6467-436e-98d6-2ca378a20116.png">
