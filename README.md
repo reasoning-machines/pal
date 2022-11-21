@@ -53,3 +53,15 @@ python scripts/{colored_objects|gsm|date_understanding|penguin}_eval.py
 <img width="597" alt="image" src="https://user-images.githubusercontent.com/15002544/202954797-68e8d45d-3435-4abf-96e4-f10371b55e38.png">
 
 For the complete details of the results, see the [paper](https://arxiv.org/pdf/2211.10435.pdf) .
+
+## Citation
+```
+@article{https://doi.org/10.48550/arxiv.2211.10435,
+  doi = {10.48550/ARXIV.2211.10435},
+  url = {https://arxiv.org/abs/2211.10435},
+  author = {Gao, Luyu and Madaan, Aman and Zhou, Shuyan and Alon, Uri and Liu, Pengfei and Yang, Yiming and Callan, Jamie and Neubig, Graham},
+  title = {PAL: Program-aided Language Models},
+  publisher = {arXiv},
+  year = {2022},
+}
+```
