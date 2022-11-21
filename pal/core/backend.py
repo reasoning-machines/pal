@@ -32,6 +32,6 @@ def call_gpt(prompt, model='code-davinci-002', stop=None, max_tokens=128, temper
                             n=num_completions,
                             best_of=best_of)
             return [choice['text'] for choice in ans['choices']]
-        except openai.error.RateLimitError:
-            time.sleep(max(i+1, 3))
+        except openai.error.RateLimitError as e:
+            time.sleep(min(2**i, 60))
     raise RuntimeError('Failed to call GPT API')

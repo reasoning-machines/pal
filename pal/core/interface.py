@@ -59,7 +59,7 @@ class TextInterface:
         return last_line[len(self.answer_prefix):].strip()
     
     def run(self, prompt, temperature=0.0):
-        gen = call_gpt(prompt, model=self.model, stop=self.stop, max_tokens=512, temperature=temperature)
+        gen = call_gpt(prompt, model=self.model, stop=self.stop, max_tokens=128, temperature=temperature)
         self.history.append(gen)
         return self.extract_answer(gen)
         
@@ -123,7 +123,11 @@ class ProgramInterface:
         results = []
         for code in code_snippets:
             with timeout(time_out):
-                exec_result = self.execute(code)
+                try:
+                    exec_result = self.execute(code)
+                except Exception as e:
+                    print(e)
+                    continue
                 results.append(exec_result)
         counter = Counter(results)
         return counter.most_common(1)[0][0]
