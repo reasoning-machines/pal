@@ -1,241 +1,283 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
+
 <head>
-  <meta charset="utf-8">
-  <meta name="description"
+    <meta charset="utf-8">
+    <meta name="description"
         content="PAL generates a Python program to solve a task from its natural language description.">
-  <meta name="keywords" content="Chain of thought, few-shot prompting, codex, gpt3, reasoning, program-aided lm, symbolic reasoning">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PAL: Program-aided Language Models</title>
+    <meta name="keywords"
+        content="Chain of thought, few-shot prompting, codex, gpt3, reasoning, program-aided lm, symbolic reasoning">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PAL: Program-aided Language Models</title>
 
 
-  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
 
-  <link rel="stylesheet" href="./static/css/bulma.min.css">
-  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
-  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
-  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
-  <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-  <link rel="stylesheet" href="./static/css/index.css">
-  <link rel="icon" href="./static/images/favicon.svg">
+    <link rel="stylesheet" href="./static/css/prism.css">
+    <link rel="stylesheet" href="./static/css/bulma.min.css">
+    <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+    <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+    <link rel="stylesheet" href="./static/css/index.css">
+    <link rel="icon" href="./static/images/favicon.svg">
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script defer src="./static/js/fontawesome.all.min.js"></script>
-  <script src="./static/js/bulma-carousel.min.js"></script>
-  <script src="./static/js/bulma-slider.min.js"></script>
-  <script src="./static/js/index.js"></script>
-  <script src="https://d3js.org/d3.v4.js"></script>
-  <script src="./static/js/results.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.8.0/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.3/clipboard.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script defer src="./static/js/fontawesome.all.min.js"></script>
+    <script src="./static/js/bulma-carousel.min.js"></script>
+    <script src="./static/js/bulma-slider.min.js"></script>
+    <script src="./static/js/index.js"></script>
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <script src="./static/js/results.js"></script>
+    <script>
+        $(function () {
+            $("#outputs").load("./static/outputs.html");
+        });
 
-<!--font awesome-->
-  <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
+    </script>
+    <!--    <script src="./static/js/prism.js"></script>-->
+
+    <!--font awesome-->
+    <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
+
 
 </head>
+
 <body>
 
 
+    <section class="hero">
+        <div class="hero-body">
+            <div class="container is-max-desktop">
+                <div class="columns is-centered">
+                    <div class="column has-text-centered">
+                        <h1 class="title is-1 publication-title">PAL: Program-aided Language Models</h1>
+                        <div class="is-size-5 publication-authors">
+                            <span class="author-block">
+                                <a href="https://luyug.github.io/">Luyu Gao</a><sup>*1</sup>,</span>
+                            <span class="author-block">
+                                <a href="https://madaan.github.io/">Aman Madaan</a><sup>*1</sup>,</span>
+                            <span class="author-block">
+                                <a href="https://shuyanzhou.github.io/">Shuyan Zhou</a><sup>*1</sup>,
+                            </span>
+                            <span class="author-block">
+                                <a href="https://urialon.ml/">Uri Alon</a><sup>1</sup>,
+                            </span>
+                            <span class="author-block">
+                                <a href="http://pfliu.com/">Pengfei Liu</a><sup>1,2</sup>,
+                            </span>
+                            <span class="author-block">
+                                <a href="https://www.cs.cmu.edu/~./yiming/">Yiming Yang</a><sup>1</sup>,
+                            </span>
+                            <span class="author-block">
+                                <a href="http://www.cs.cmu.edu/~callan/">Jamie Callan</a><sup>1</sup>
+                            </span>
+                            <span class="author-block">
+                                <a href="http://www.phontron.com/">Graham Neubig</a><sup>1,2</sup>
+                            </span>
+                        </div>
 
-<section class="hero">
-  <div class="hero-body">
-    <div class="container is-max-desktop">
-      <div class="columns is-centered">
-        <div class="column has-text-centered">
-          <h1 class="title is-1 publication-title">PAL: Program-aided Language Models</h1>
-          <div class="is-size-5 publication-authors">
-            <span class="author-block">
-              <a href="https://luyug.github.io/">Luyu Gao</a><sup>*1</sup>,</span>
-            <span class="author-block">
-              <a href="https://madaan.github.io/">Aman Madaan</a><sup>*1</sup>,</span>
-            <span class="author-block">
-              <a href="https://shuyanzhou.github.io/">Shuyan Zhou</a><sup>*1</sup>,
-            </span>
-            <span class="author-block">
-              <a href="https://urialon.ml/">Uri Alon</a><sup>1</sup>,
-            </span>
-            <span class="author-block">
-              <a href="http://pfliu.com/">Pengfei Liu</a><sup>1,2</sup>,
-            </span>
-            <span class="author-block">
-              <a href="https://www.cs.cmu.edu/~./yiming/">Yiming Yang</a><sup>1</sup>,
-            </span>
-            <span class="author-block">
-              <a href="http://www.cs.cmu.edu/~callan/">Jamie Callan</a><sup>1</sup>
-            </span>
-            <span class="author-block">
-              <a href="http://www.phontron.com/">Graham Neubig</a><sup>1,2</sup>
-            </span>
-          </div>
+                        <div class="is-size-5 publication-authors">
+                            <span class="author-block"><sup>1</sup>Language Technologies Institute, School of CS,
+                                Carnegie Mellon University</span>
+                            <br />
+                            <span class="author-block"><sup>2</sup>Inspired Cognition, <sup>*</sup>Equal
+                                contribution</span>
 
-          <div class="is-size-5 publication-authors">
-            <span class="author-block"><sup>1</sup>Language Technologies Institute, School of CS, Carnegie Mellon University</span>
-            <br/>
-            <span class="author-block"><sup>2</sup>Inspired Cognition, <sup>*</sup>Equal contribution</span>
+                        </div>
 
-          </div>
+                        <div class="column has-text-centered">
+                            <div class="publication-links">
+                                <!-- PDF Link. -->
+                                <span class="link-block">
+                                    <a href="https://arxiv.org/abs/2211.10435"
+                                        class="external-link button is-normal is-rounded is-dark">
+                                        <span class="icon">
+                                            <i class="fas fa-file-pdf"></i>
+                                        </span>
+                                        <span>Paper</span>
+                                    </a>
+                                </span>
+                                <span class="link-block">
+                                    <a href="https://colab.research.google.com/drive/1u4_RsdI0E79PCMDdcPiJUzYhdnjoXeXc?usp=sharing"
+                                        class="external-link button is-normal is-rounded is-dark">
+                                        <span class="icon">
+                                            <i class="fas fa-terminal"></i>
+                                        </span>
+                                        <span>Colab</span>
+                                    </a>
+                                </span>
+                                <!-- Code Link. -->
+                                <span class="link-block">
+                                    <a href="https://github.com/luyug/pal"
+                                        class="external-link button is-normal is-rounded is-dark">
+                                        <span class="icon">
+                                            <i class="fab fa-github"></i>
+                                        </span>
+                                        <span>Code</span>
+                                    </a>
+                                </span>
+                                <!-- Dataset Link. -->
+                                <span class="link-block">
+                                    <a href="https://github.com/luyug/pal/tree/main/datasets"
+                                        class="external-link button is-normal is-rounded is-dark">
+                                        <span class="icon">
+                                            <i class="far fa-file"></i>
+                                        </span>
+                                        <span>Data</span>
+                                    </a>
+                            </div>
 
-          <div class="column has-text-centered">
-            <div class="publication-links">
-              <!-- PDF Link. -->
-              <span class="link-block">
-                <a href="https://arxiv.org/abs/2211.10435"
-                   class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                      <i class="fas fa-file-pdf"></i>
-                  </span>
-                  <span>Paper</span>
-                </a>
-              </span>
-              <span class="link-block">
-                <a href="https://colab.research.google.com/drive/1u4_RsdI0E79PCMDdcPiJUzYhdnjoXeXc?usp=sharing"
-                   class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                    <i class="fas fa-terminal"></i>
-                  </span>
-                  <span>Colab</span>
-                </a>
-              </span>
-              <!-- Code Link. -->
-              <span class="link-block">
-                <a href="https://github.com/luyug/pal"
-                   class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                      <i class="fab fa-github"></i>
-                  </span>
-                  <span>Code</span>
-                  </a>
-              </span>
-              <!-- Dataset Link. -->
-              <span class="link-block">
-                <a href="https://github.com/luyug/pal/tree/main/datasets"
-                   class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                      <i class="far fa-file"></i>
-                  </span>
-                  <span>Data</span>
-                  </a>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-          </div>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<section class="hero teaser">
-  <div class="container is-max-desktop">
-    <div class="hero-body">
-      <figure class="image is-8by6">
-        <img src="static/images/pal_overview.png">
-      </figure>
-      <h2 class="subtitle has-text-centered">
-        <span class="pal">PAL</span> generates a Python program to solve a task from its natural language description.
-      </h2>
-    </div>
-  </div>
-</section>
-
-
-<section class="section">
-
-  <div class="container is-max-desktop">
-    <!-- Abstract. -->
-    <div class="columns is-centered has-text-centered">
-
-      <div class="column is-four-fifths">
-        <h2 class="title is-3">Abstract</h2>
-        <div class="content has-text-justified is-size-4">
-          
-          <p> We present <b>Program-Aided Language models (<span class="pal">PAL</span>)</b>: a new method that uses the LLM to read natural language problems and generate programs as the intermediate reasoning steps, but offloads the solution step to a programmatic runtime such as a Python interpreter. 
-          </p>  
-          
-          <p>With <span class="pal">PAL</span>, decomposing the natural language problem into runnable steps remains the only learning task for the LLM, while solving is delegated to the interpreter. 
-            We demonstrate this synergy between a neural LLM and a symbolic interpreter across 12 reasoning tasks from BIG-Bench Hard and other benchmarks, including mathematical reasoning, symbolic reasoning, and algorithmic problems.  
-            In all these natural language reasoning tasks, generating code using an LLM and reasoning using a Python interpreter leads to more accurate results than much larger models, and we set new state-of-the-art results in all 12 benchmarks. 
-            For example, <span class="pal">PAL</span> using Codex achieves state-of-the-art few-shot accuracy on the GSM benchmark of math word problems when the model is allowed only a single decoding, surpassing PALM-540B with chain-of-thought prompting by absolute 8%. 
-            In three reasoning tasks from the BIG-Bench Hard benchmark, <span class="pal">PAL</span> outperforms CoT by 11%. On GSM-hard, a more challenging version of GSM that we create, <span class="pal">PAL</span> outperforms chain-of-thought by an absolute 40%.
-        </p>
-          
+    <section class="hero teaser">
+        <div class="container is-max-desktop">
+            <div class="hero-body">
+                <figure class="image is-8by6">
+                    <img src="static/images/pal_overview.png">
+                </figure>
+                <h2 class="subtitle has-text-centered">
+                    <span class="pal">PAL</span> generates a Python program to solve a task from its natural language
+                    description.
+                </h2>
+            </div>
         </div>
-      </div>
-    </div>
-    <!--/ Abstract. -->
-  </div>
-</section>
-
-
-
-
-
-<!--Results section, with 3 pictures, one in each row-->
-<section class="section">
-  <div class="container is-max-desktop">
-  <div class="columns is-centered has-text-centered">
-    <div class="column is-four-fifths">
-      <h2 class="title is-3">Results Summary</h2>
-      <span class="pal">PAL</span> outperforms chain-of-thought on 12 benchmarks, including 3 from BIG-Bench Hard.
-
-      <!--row1, colored objects-->
-      <figure class="image is-64by64">
-        <img src="https://user-images.githubusercontent.com/15002544/202954755-bf89aab6-6467-436e-98d6-2ca378a20116.png">
-        <caption>Symbolic Reasoning</caption>
-      </figure>
-      <hr>
-      <!--row2, math reasoning-->
-      <figure class="image">
-        <img src="https://user-images.githubusercontent.com/15002544/202954780-7e1221f1-3008-46d9-877b-b26df9f98d66.png">
-        <caption>Mathematical Reasoning</caption>
-      </figure>
-      <hr>
-
-      <!--row3, algorithmic reasoning-->
-      <figure>
-        <img src="https://user-images.githubusercontent.com/15002544/202954797-68e8d45d-3435-4abf-96e4-f10371b55e38.png" height="512" width="512">
-        <br>
-        <caption>Algorithmic Reasoning</caption>
-      </figure>
     </section>
 
 
-<section class="section" id="BibTeX">
-  <div class="container is-max-desktop content">
-    <h2 class="title">BibTeX</h2>
-    <pre><code>
-      @article{gao2022pal,
-        author = {Gao, Luyu and Madaan, Aman and Zhou, Shuyan and Alon, Uri and Liu, Pengfei and Yang, Yiming and Callan, Jamie and Neubig, Graham},
-        title = {PAL: Program-aided Language Models},
-        publisher = {arXiv},
-        year = {2022},
-      }
-</code></pre>
-  </div>
-</section>
+    <section class="section">
 
+        <div class="container is-max-desktop">
+            <!-- Abstract. -->
+            <div class="columns is-centered has-text-centered">
 
-<footer class="footer">
-  <div class="container">
-    <div class="content has-text-centered">
-      <a class="icon-link"
-         href="https://arxiv.org/pdf/2211.10435.pdf">
-        <i class="fas fa-file-pdf"></i>
-      </a>
-      <a class="icon-link" href="https://github.com/luyug/pal" class="external-link" disabled>
-        <i class="fab fa-github"></i>
-      </a>
-    </div>
-    <div class="columns is-centered">
-      <div class="column is-8">
-        <div class="content">
-          <p>
-            Template adapted from <a href="http://nerfies.github.io/">Nerfies</a> by Keunhong Park et al. and uses <a href="https://bulma.io/">Bulma</a>.
-          </p>
+                <div class="column is-four-fifths">
+                    <h2 class="title is-3">Abstract</h2>
+                    <div class="content has-text-justified is-size-4">
+
+                        <p> We present <b>Program-Aided Language models (<span class="pal">PAL</span>)</b>: a new method
+                            that uses the LLM to read natural language problems and generate programs as the
+                            intermediate
+                            reasoning steps, but offloads the solution step to a programmatic runtime such as a Python
+                            interpreter.
+                        </p>
+
+                        <p>With <span class="pal">PAL</span>, decomposing the natural language problem into runnable
+                            steps
+                            remains the only learning task for the LLM, while solving is delegated to the interpreter.
+                            We demonstrate this synergy between a neural LLM and a symbolic interpreter across 12
+                            reasoning
+                            tasks from BIG-Bench Hard and other benchmarks, including mathematical reasoning, symbolic
+                            reasoning, and algorithmic problems.
+                            In all these natural language reasoning tasks, generating code using an LLM and reasoning
+                            using
+                            a Python interpreter leads to more accurate results than much larger models, and we set new
+                            state-of-the-art results in all 12 benchmarks.
+                            For example, <span class="pal">PAL</span> using Codex achieves state-of-the-art few-shot
+                            accuracy on the GSM benchmark of math word problems when the model is allowed only a single
+                            decoding, surpassing PALM-540B with chain-of-thought prompting by absolute 8%.
+                            In three reasoning tasks from the BIG-Bench Hard benchmark, <span class="pal">PAL</span>
+                            outperforms CoT by 11%. On GSM-hard, a more challenging version of GSM that we create, <span
+                                class="pal">PAL</span> outperforms chain-of-thought by an absolute 40%.
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+            <!--/ Abstract. -->
         </div>
-      </div>
-    </div>
-  </div>
-</footer>
+    </section>
+
+
+    <!--Results section, with 3 pictures, one in each row-->
+    <section class="section">
+        <div class="container is-max-desktop">
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-four-fifths">
+                    <h2 class="title is-3">Results Summary</h2>
+                    <span class="pal">PAL</span> outperforms chain-of-thought on 12 benchmarks, including 3 from
+                    BIG-Bench
+                    Hard.
+
+                    <!--row1, colored objects-->
+                    <figure class="image is-64by64">
+                        <img
+                            src="https://user-images.githubusercontent.com/15002544/202954755-bf89aab6-6467-436e-98d6-2ca378a20116.png">
+                        <caption>Symbolic Reasoning</caption>
+                    </figure>
+                    <hr>
+                    <!--row2, math reasoning-->
+                    <figure class="image">
+                        <img
+                            src="https://user-images.githubusercontent.com/15002544/202954780-7e1221f1-3008-46d9-877b-b26df9f98d66.png">
+                        <caption>Mathematical Reasoning</caption>
+                    </figure>
+                    <hr>
+
+                    <!--row3, algorithmic reasoning-->
+                    <figure>
+                        <img src="https://user-images.githubusercontent.com/15002544/202954797-68e8d45d-3435-4abf-96e4-f10371b55e38.png"
+                            height="512" width="512">
+                        <br>
+                        <caption>Algorithmic Reasoning</caption>
+                    </figure>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <section class="section" id="outputs">
+    </section>
+
+    <section class="section" id="BibTeX">
+        <div class="container is-max-desktop content">
+            <h2 class="title">BibTeX</h2>
+            <pre><code>@article{gao2022pal,
+    author = {Gao, Luyu and Madaan, Aman and Zhou, Shuyan and Alon, Uri and Liu, Pengfei and Yang, Yiming and Callan, Jamie and Neubig, Graham},
+    title = {PAL: Program-aided Language Models},
+    publisher = {arXiv},
+    year = {2022},
+}
+</code></pre>
+        </div>
+    </section>
+
+
+    <footer class="footer">
+        <div class="container">
+            <div class="content has-text-centered">
+                <a class="icon-link" href="https://arxiv.org/pdf/2211.10435.pdf">
+                    <i class="fas fa-file-pdf"></i>
+                </a>
+                <a class="icon-link" href="https://github.com/luyug/pal" class="external-link" disabled>
+                    <i class="fab fa-github"></i>
+                </a>
+            </div>
+            <div class="columns is-centered">
+                <div class="column is-8">
+                    <div class="content">
+                        <p>
+                            Template adapted from <a href="http://nerfies.github.io/">Nerfies</a> by Keunhong Park et
+                            al.
+                            and uses <a href="https://bulma.io/">Bulma</a>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 
 </body>
+
 </html>
