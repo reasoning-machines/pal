@@ -58,12 +58,10 @@ For the complete details of the results, see the [paper](https://arxiv.org/pdf/2
 
 ## Citation
 ```
-@article{https://doi.org/10.48550/arxiv.2211.10435,
-  doi = {10.48550/ARXIV.2211.10435},
-  url = {https://arxiv.org/abs/2211.10435},
-  author = {Gao, Luyu and Madaan, Aman and Zhou, Shuyan and Alon, Uri and Liu, Pengfei and Yang, Yiming and Callan, Jamie and Neubig, Graham},
-  title = {PAL: Program-aided Language Models},
-  publisher = {arXiv},
-  year = {2022},
+@article{gao2022pal,
+  title={PAL: Program-aided Language Models},
+  author={Gao, Luyu and Madaan, Aman and Zhou, Shuyan and Alon, Uri and Liu, Pengfei and Yang, Yiming and Callan, Jamie and Neubig, Graham},
+  journal={arXiv preprint arXiv:2211.10435},
+  year={2022}
 }
 ```
