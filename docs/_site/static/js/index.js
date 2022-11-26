@@ -19,7 +19,8 @@ $(document).ready(function() {
     }
 
     // examples
-    $('select').on('change', function() {
+    $('select').on('click', function() {
+
         var sep_idx = this.value.indexOf('_');
         var domain_name = this.value.substring(0, sep_idx);
         var desired_cmd_idx = parseInt(this.value.substring(sep_idx + 1));
@@ -27,6 +28,11 @@ $(document).ready(function() {
 
         // hide current content
         var current_content = $('#content_' + domain_name + "_" + current_cmd_idx.toString());
+        
+        if (desired_cmd_idx == current_cmd_idx && current_content.is(":visible")) {
+            current_content.hide();
+            return;
+        }
         current_content.hide();
 
         // show desired content
