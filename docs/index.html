@@ -13,7 +13,7 @@
 
     <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
 
-    <!-- <link rel="stylesheet" href="./static/css/prism.css"> -->
+    <link rel="stylesheet" href="./static/css/prism.css">
     <link rel="stylesheet" href="./static/css/bulma.min.css">
     <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
     <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
@@ -32,7 +32,7 @@
     <script src="./static/js/bulma-slider.min.js"></script>
     <script src="./static/js/index.js"></script>
     <script src="https://d3js.org/d3.v4.js"></script>
-    <script src="./static/js/results.js"></script>
+    <!-- <script src="./static/js/results.js"></script> -->
     <!-- <script src="./static/js/prism.js"></script> -->
 
     <!--solution from https://stackoverflow.com/questions/23018619/make-text-in-select-element-wrap-when-too-long-->
@@ -43,6 +43,17 @@
     text-overflow: ellipsis;
 }
 </style>
+<script>
+    // toggle the visibility of the element with id "element_id"
+function toggle_visibility(element_id) {
+    var e = document.getElementById(element_id);
+    if(e.style.display == 'block')
+       e.style.display = 'none';
+    else
+       e.style.display = 'block';
+}
+
+</script>
 <!-- <script>
         $(function () {
             $("#outputs").load("./static/outputs.html");
@@ -240,6 +251,22 @@
         </div>
     </section>
 
+<pre>
+<code class="language-python">    
+def solution():
+"""A tank has a capacity of 18000 gallons. Wanda and Ms. B decided to pump water from a pond to fill the tank in two days. On the first day, working in shifts, Wanda filled 1/4 of the tank's capacity with water, and Ms. B pumped 3/4 as much water as Wanda pumped into the tank that day. On the second day, Wanda pumped 2/3 of the amount of water she pumped on the previous day, while Ms. B only pumped 1/3 of the number of gallons she pumped on the first day. How many gallons of water are remaining for the tank to be full?"""
+    tank_capacity = 18000
+    wanda_day_1 = tank_capacity / 4
+    ms_b_day_1 = 3 * wanda_day_1 / 4
+    wanda_day_2 = 2 * wanda_day_1 / 3
+    ms_b_day_2 = ms_b_day_1 / 3
+    total_pumped = wanda_day_1 + ms_b_day_1 + wanda_day_2 + ms_b_day_2
+    gallons_remaining = tank_capacity - total_pumped
+    result = gallons_remaining
+    return result
+<p style="color:Tomato">>>> 6000.0</p>
+</code>
+</pre>
 
 <hr>
     <section class="section" id="examples-gsm8k">
@@ -250,10 +277,14 @@
             <span class="subtitle is-5 is-italic">Sample outputs for all the datasets are shown below. Clicking on any example pops up the question, the text reasoning generated with chain-of-thought prompting,
                  and Python based reasoning generated with <span class="pal">PAL</span>.</span> <br><br>
             <article class="message is-multiline" id="gsm8koutputs" style="background-color: white;">
-                <div class="message-header"><p>GSM8K</p></div>
+                <div class="message-header" id="gsm8k_header">
+                    <p>GSM8K</p>
+                    <!--add a button on the right for toggle-->
+                    <button class="button is-small is-light" id="gsm8kbutton">Show</button>
+                </div>
             <!-- <h3 class="title is-4" id="gsm8k">GSM8k</h3> -->
             
-            <div class="select is-multiple">
+            <div class="select is-multiple" id="gsm8k_options">
                 <select multiple size="8">
                     <option value="gsm_0">A tank has a capacity of 18000 gallons. Wanda and Ms. B decided to pump water from a pond
                         to fill the tank in two days. On the first day, working in shifts, Wanda filled 1/4 of the tank's
@@ -311,30 +342,27 @@
                     </div>
                     <div class="content">
                         <p class="title is-5">CoT</p>
-                        <blockquote class="has-text-left"> On the first day, Wanda pumped 1/4 of the tank's capacity. So that is 1/4 * 18000 = 4500
-                            gallons. Ms. B pumped 3/4 as much as Wanda, so that is 3/4 * 4500 = 3375 gallons. So on the first
-                            day, they pumped 4500 + 3375 = 7875 gallons. On the second day, Wanda pumped 2/3 of the amount she
-                            pumped on the first day, so that is
+                        <blockquote class="has-text-left"> The tank can hold 18000 gallons. On the first day, Wanda pumps 1/4 of the tank, which is 1/4 * 18000 = 4500 gallons. Ms. B pumps 3/4 as much as Wanda, which is 3/4 * 4500 = 3375 gallons. So the total amount of water pumped on the first day is 4500 + 3375 = 7875 gallons. On the second day, Wanda pumps 2/3 of the amount she pumped on the first day, which is 2/3 * 4500 = 3000 gallons. Ms. B pumps 1/3 of the amount she pumped on the first day, which is 1/3 * 3375 = 1125 gallons. So the total amount of water pumped on the second day is 3000 + 1125 = 4125 gallons. The total amount of water pumped into the tank is 7875 + 4125 = 12000 gallons. The amount of water remaining is 18000 - 12000 = 6000 gallons.
                         </blockquote>
                     </div>
                     <br>
-                    <p class="title is-5 has-text-left">PaL</p>
-                    <pre>
-                    <code class="language-python">    
-        def solution():
-            """A tank has a capacity of 18000 gallons. Wanda and Ms. B decided to pump water from a pond to fill the tank in two days. On the first day, working in shifts, Wanda filled 1/4 of the tank's capacity with water, and Ms. B pumped 3/4 as much water as Wanda pumped into the tank that day. On the second day, Wanda pumped 2/3 of the amount of water she pumped on the previous day, while Ms. B only pumped 1/3 of the number of gallons she pumped on the first day. How many gallons of water are remaining for the tank to be full?"""
-            tank_capacity = 18000
-            wanda_day_1 = tank_capacity / 4
-            ms_b_day_1 = 3 * wanda_day_1 / 4
-            wanda_day_2 = 2 * wanda_day_1 / 3
-            ms_b_day_2 = ms_b_day_1 / 3
-            total_pumped = wanda_day_1 + ms_b_day_1 + wanda_day_2 + ms_b_day_2
-            gallons_remaining = tank_capacity - total_pumped
-            result = gallons_remaining
-            return result
-        <p style="color:Tomato">>>> 6000.0</p>
-                    </code>
-                </pre>
+                    <p class="title is-5">PaL</p>
+<pre>
+<code class="language-python">    
+def solution():
+"""A tank has a capacity of 18000 gallons. Wanda and Ms. B decided to pump water from a pond to fill the tank in two days. On the first day, working in shifts, Wanda filled 1/4 of the tank's capacity with water, and Ms. B pumped 3/4 as much water as Wanda pumped into the tank that day. On the second day, Wanda pumped 2/3 of the amount of water she pumped on the previous day, while Ms. B only pumped 1/3 of the number of gallons she pumped on the first day. How many gallons of water are remaining for the tank to be full?"""
+    tank_capacity = 18000
+    wanda_day_1 = tank_capacity / 4
+    ms_b_day_1 = 3 * wanda_day_1 / 4
+    wanda_day_2 = 2 * wanda_day_1 / 3
+    ms_b_day_2 = ms_b_day_1 / 3
+    total_pumped = wanda_day_1 + ms_b_day_1 + wanda_day_2 + ms_b_day_2
+    gallons_remaining = tank_capacity - total_pumped
+    result = gallons_remaining
+    return result
+<p style="color:Tomato">>>> 6000.0</p>
+</code>
+</pre>
                 </div>
                 <div class="block" id="content_gsm_1" style="display:none">
                     <div class="content">
@@ -351,6 +379,7 @@
                     </div>
                     <br>
                     <p class="title is-5">PaL</p>
+                    <div class="content">
                     <pre>
                     <code class="language-python">    
         def solution():
@@ -368,6 +397,7 @@
                     </code>
                 </pre>
                 </div>
+            </div>
                 <div class="block" id="content_gsm_2" style="display:none">
                     <div class="content">
                         <p class="title is-5">Question</p>
@@ -636,9 +666,14 @@
             <br>
             <!-- <h3 class="title is-4">GSM8k-Hard</h3> -->
             <article class="message is-multiline" id="gsm8khardoutputs" style="background-color: white;">
-                <div class="message-header"><p>GSM8k-Hard</p></div>
+                <div class="message-header" id="gsm8khard_header">
+                    <p>GSM8k-Hard
 
-            <div class="select is-multiple">
+                    </p>
+                    <button class="button is-small is-light" id="gsm8khard_button">Show</button>
+                </div>
+
+            <div class="select is-multiple" id="gsm8khard_options">
                 <select multiple size="8">
                     <option value="gsmhard_0"> John goes to the market and buys 3 goats for $500 each and 2 cows for
                         $6471657.7511 each. How much money did he spend?
@@ -895,8 +930,10 @@
 
             <!--colored objects-->
             <article class="message is-multiline" id="coloredobjects" style="background-color: white;">
-                <div class="message-header"><p>Colored Objects</p></div>
-            <div class="select is-multiple">
+                <div class="message-header" id="coloredobjects_header">
+                    <p>Colored Objects</p>
+                </div>
+            <div class="select is-multiple" id="coloredobjects_options">
                 <select multiple size="8">
                     <option value="coloredobjects_0"> On the desk, I see three turquoise puzzles, two turquoise
                         scrunchiephone chargers, two red scrunchiephone chargers, and three mauve scrunchiephone chargers.
@@ -1348,8 +1385,10 @@
     
                 <!--date understanding-->
             <article class="message is-multiline" id="dateunderstanding" style="background-color: white;">
-                <div class="message-header"><p>Date Understanding</p></div>
-            <div class="select is-multiple">
+                <div class="message-header" id="dateunderstanding_header">
+                    <p>Date Understanding</p>
+                </div>
+            <div class="select is-multiple" id="dateunderstanding_options">
                 <select multiple size="8">
                     <option value="date_0"> Jane quited her job on Mar 20, 2020. 176 days have passed since then. What is
                         the date tomorrow in MM/DD/YYYY?
@@ -1645,9 +1684,11 @@
         </article>
     <!--repeat copy-->
 <article class="message is-multiline" id="repeatcopy" style="background-color: white;">
-    <div class="message-header"><p>Repeat Copy</p></div>
+    <div class="message-header" id="repeatcopy_header">
+        <p>Repeat Copy</p>
+    </div>
             <h3 class="title is-4"></h3>
-            <div class="select is-multiple">
+            <div class="select is-multiple" id="repeatcopy_options">
                 <select multiple size="8">
                     <option value="repeatcopy_0"> Say the days of the week but only the weekend days, two times</option>
                     <option value="repeatcopy_1"> Repeat the phrase all cars eat gas four times. On the odd times, drop

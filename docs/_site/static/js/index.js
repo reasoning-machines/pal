@@ -37,12 +37,53 @@ $(document).ready(function() {
 
         // show desired content
         var desired_content = $('#content_' + domain_name + "_" + desired_cmd_idx.toString());
-        desired_content.show();
+        desired_content.show("slow");
 
         // set current to desired
         current_cmd_idxs[domain_name] = desired_cmd_idx;
     });
+
+
+
+    // general function for xyzheader
+    function toggle_options(header_id, options_id) {
+        if ($(options_id).is(":visible")) {
+            $(options_id).hide();
+            $(header_id).removeClass("is-active");
+        } else {
+            $(options_id).show("slow");
+            $(header_id).addClass("is-active");
+        }
+    }
+
+    $('#gsm8k_button').click(function() {
+        toggle_options('#gsm8k_header', '#gsm8k_options');
+    });
+    $('#gsm8khard_button').click(function() {
+        toggle_options('#gsm8khard_header', '#gsm8khard_options');
+    }
+    );
+    $('#coloredobjects_button').click(function() {
+        toggle_options('#coloredobjects_header', '#coloredobjects_options');
+    }
+    );
+    $('#repeatcopy_button').click(function() {
+        toggle_options('#repeatcopy_header', '#repeatcopy_options');
+    }
+    );
+    $('#dateunderstanding_button').click(function() {
+        toggle_options('#dateunderstanding_header', '#dateunderstanding_options');
+    }
+    );
+
+    $('#gsm8khard_options').hide();
+    $('#coloredobjects_options').hide();
+    $('#repeatcopy_options').hide();
+    $('#dateunderstanding_options').hide();
+    
+
 })
+
 
 
 
