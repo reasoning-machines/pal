@@ -1,0 +1,110 @@
+Question: How many keystrokes are needed to type the numbers from 1 to 500?
+Answer Choices:
+(a) 1156
+(b) 1392
+(c) 1480
+(d) 1562
+(e) 1788
+
+# solution using Python:
+
+def solution():
+    """Question: How many keystrokes are needed to type the numbers from 1 to 500?
+    Answer Choices:
+    (a) 1156
+    (b) 1392
+    (c) 1480
+    (d) 1562
+    (e) 1788
+    """
+    count_one_digit = 9
+    count_two_digit = 90
+    count_three_digit = 401
+    total_keystrokes = count_one_digit + count_two_digit * 2 + count_three_digit * 3
+    result = total_keystrokes
+    return result
+
+
+Question: A person is traveling at 20 km/hr and reached his destiny in 2.5 hr then find the distance?
+Answer Choices:
+(a) 53 km
+(b) 55 km
+(c) 52 km
+(d) 60 km
+(e) 50 km
+
+# solution using Python:
+
+def solution():
+    """Question: A person is traveling at 20 km/hr and reached his destiny in 2.5 hr then find the distance?
+    Answer Choices:
+    (a) 53 km
+    (b) 55 km
+    (c) 52 km
+    (d) 60 km
+    (e) 50 km
+    """
+    speed_km_hr = 20
+    time_hr = 2.5
+    distance_km = speed_km_hr * time_hr
+    result = distance_km
+    return result
+
+
+
+Question: If a / b = 3/4 and 8a + 5b = 22,then find the value of a.
+Answer Choices:
+(a) 1/2
+(b) 3/2
+(c) 5/2
+(d) 4/2
+(e) 7/2
+
+# solution using Python:
+
+def solution():
+    """Question: If a / b = 3/4 and 8a + 5b = 22,then find the value of a.
+    Answer Choices:
+    (a) 1/2
+    (b) 3/2
+    (c) 5/2
+    (d) 4/2
+    (e) 7/2
+    """
+    a_b = 3/4
+    b = 22 / (8 * a_b + 5) 
+    a = a_b * b
+    result = a
+    return result
+
+
+
+Question: John found that the average of 15 numbers is 40. If 10 is added to each number then the mean of the numbers is?
+Answer Choices:
+(a) 50
+(b) 45
+(c) 65
+(d) 78
+(e) 64
+
+# solution using Python:
+
+def solution():
+    """Question: John found that the average of 15 numbers is 40. If 10 is added to each number then the mean of the numbers is?
+    Answer Choices:
+    (a) 50
+    (b) 45
+    (c) 65
+    (d) 78
+    (e) 64
+    """
+    mean = 40
+    numbers = 15
+    added_per_number = 10
+    sum = mean * numbers
+    new_sum = sum + (added_per_number * numbers)
+    new_mean = new_sum / numbers
+    result = new_mean
+    return result
+
+
