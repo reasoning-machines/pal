@@ -14,19 +14,26 @@
 
 import openai
 import time
+import os
 
+openai.api_key = os.getenv('OPENAI_API_KEY')
 
 # GPT-3 API
-def call_gpt(prompt, model='code-davinci-002', stop=None, max_tokens=128, temperature=0.):
+def call_gpt(prompt, model='code-davinci-002', stop=None, temperature=0., top_p=1.0,
+        max_tokens=128, majority_at=None):
     for i in range(20):
         try:
+            num_completions = majority_at if majority_at is not None else 1
             ans = openai.Completion.create(
                             model=model,
                             max_tokens=max_tokens,
                             stop=stop,
                             prompt=prompt,
-                            temperature=temperature)
-            return ans['choices'][0]['text']
-        except openai.error.RateLimitError:
-            time.sleep(max(i+1, 3))
+                            temperature=temperature,
+                            top_p=top_p,
+                            n=num_completions,
+                            best_of=num_completions)
+            return [choice['text'] for choice in ans['choices']]
+        except openai.error.RateLimitError as e:
+            time.sleep(min(i**2, 60))
     raise RuntimeError('Failed to call GPT API')
