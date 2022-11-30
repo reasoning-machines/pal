@@ -17,6 +17,7 @@ import copy
 import json
 import argparse
 import tqdm
+import os
 
 from pal import interface
 from pal.prompt import math_prompts
@@ -35,6 +36,7 @@ args = parser.parse_args()
 
 DATA_PATH = f'datasets/{args.dataset}.jsonl'
 OUTPUT_PATH = f'eval_results/{args.dataset}.jsonl'
+os.makedirs(os.path.dirname(OUTPUT_PATH), exist_ok=True)
 
 examples = list(map(json.loads, open(DATA_PATH)))
 
