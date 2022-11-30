@@ -16,6 +16,7 @@ import io
 import signal
 from contextlib import redirect_stdout
 from typing import Any, Callable, List, Optional
+from collections import Counter
 
 from .runtime import GenericRuntime
 from .backend import call_gpt
@@ -58,8 +59,9 @@ class TextInterface:
         last_line = gen.strip().split('\n')[-1]
         return last_line[len(self.answer_prefix):].strip()
     
-    def run(self, prompt):
-        gen = call_gpt(prompt, model=self.model, stop=self.stop, max_tokens=512)
+    def run(self, prompt, temperature=0.0, top_p=1.0, majority_at=None, max_tokens=512):
+        gen = call_gpt(prompt, model=self.model, stop=self.stop, 
+            temperature=temperature, top_p=top_p, max_tokens=max_tokens, majority_at=majority_at)
         self.history.append(gen)
         return self.extract_answer(gen)
         
@@ -89,15 +91,18 @@ class ProgramInterface:
     def clear_history(self):
         self.history = []
     
-    def process_generation_to_code(self, gen: str):
-        return gen.split('\n')
+    def process_generation_to_code(self, gens: str):
+        return [g.split('\n') for g in gens]
     
-    def generate(self, prompt: str):
-        gen = call_gpt(prompt, model=self.model, stop=self.stop, max_tokens=512)
+    def generate(self, prompt: str, temperature: float =0.0, top_p: float =1.0, 
+            max_tokens: int =512, majority_at: int =None, ):
+        gens = call_gpt(prompt, model=self.model, stop=self.stop, 
+            temperature=temperature, top_p=top_p, max_tokens=max_tokens, majority_at=majority_at, )
         if self.verbose:
-            print(gen)
-        self.code = self.process_generation_to_code(gen)
-        self.history.append(gen)
+            print(gens)
+        code = self.process_generation_to_code(gens)
+        self.history.append(gens)
+        return code
     
     def execute(self, code: Optional[List[str]] = None):
         code = code if code else self.code
@@ -117,7 +122,18 @@ class ProgramInterface:
             self.runtime.exec_code('\n'.join(code[:-1]))
             return self.runtime.eval_code(code[-1])
     
-    def run(self, prompt: str, time_out: float =10):
-        self.generate(prompt)
-        with timeout(time_out):
-            return self.execute()
+    def run(self, prompt: str, time_out: float =10, temperature: float =0.0, top_p: float =1.0, 
+            max_tokens: int =512, majority_at: int =None):
+        code_snippets = self.generate(prompt, majority_at=majority_at, temperature=temperature, top_p=top_p, max_tokens=max_tokens)
+        
+        results = []
+        for code in code_snippets:
+            with timeout(time_out):
+                try:
+                    exec_result = self.execute(code)
+                except Exception as e:
+                    print(e)
+                    continue
+                results.append(exec_result)
+        counter = Counter(results)
+        return counter.most_common(1)[0][0]
