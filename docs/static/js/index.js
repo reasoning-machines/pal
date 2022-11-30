@@ -11,11 +11,11 @@ $(document).ready(function() {
     });
 
     var current_cmd_idxs = {
-        "gsm": 1,
-        "gsmhard": 1,
+        "gsm8k": 1,
+        "gsm8khard": 1,
         "coloredobjects":1,
         "repeatcopy":1,
-        "date":1
+        "dateunderstanding":1
     }
 
     // examples
@@ -49,6 +49,20 @@ $(document).ready(function() {
     function toggle_options(header_id, options_id) {
         if ($(options_id).is(":visible")) {
             $(options_id).hide();
+            // extract task name from header. e.g., #gsm8k_header -> gsm8k
+            task_name = header_id.split("_")[0].substring(1);
+            
+            console.log("You have selected " + task_name + " as your task.");
+            for (var i = 0; i <= 100; i++) {
+                
+                var content_id = "#content_" + task_name + "_" + i.toString();
+                console.log(content_id);
+                // check if content exists
+                if ($(content_id).length == 0) {
+                    break;
+                }
+                $(content_id).hide();
+            }
             $(header_id).removeClass("is-active");
         } else {
             $(options_id).show("slow");
