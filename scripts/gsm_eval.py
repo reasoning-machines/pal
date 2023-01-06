@@ -28,6 +28,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--append', action='store_true')
 parser.add_argument('--verbose', action='store_true')
 parser.add_argument('--dataset', default='gsm', type=str)
+parser.add_argument('--model', default='code-davinci-002', type=str)
 parser.add_argument('--majority_at', default=None, type=int)
 parser.add_argument('--temperature', default=0.0, type=float)
 parser.add_argument('--top_p', default=1.0, type=float)
@@ -43,6 +44,7 @@ examples = list(map(json.loads, open(DATA_PATH)))
 itf = interface.ProgramInterface(
     stop='\n\n\n',
     get_answer_expr='solution()',
+    model=args.model,
     verbose=args.verbose
 )
 
