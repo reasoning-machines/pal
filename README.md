@@ -8,6 +8,13 @@ In PaL, Large Language Model solves reasoning problems that involve complex arit
 
 This repo provides an interactive implementation of PAL.
 
+## News 📢
+[Jan 2023] We release [GSM-hard](https://github.com/reasoning-machines/pal/blob/main/datasets/gsmhardv2.jsonl), a harder version of GSM8k we created. Also avaliable on [Huggingface 🤗](https://huggingface.co/datasets/reasoning-machines/gsm-hard)
+```python
+import datasets
+gsm_hard = datasets.load_dataset("reasoning-machine/gsm-hard")
+
+```
 ## Installation
 Clone this repo and install with `pip`.
 ```
