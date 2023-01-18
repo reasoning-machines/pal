@@ -12,7 +12,7 @@ This repo provides an interactive implementation of PAL.
 [Jan 2023] We release [GSM-hard](https://github.com/reasoning-machines/pal/blob/main/datasets/gsmhardv2.jsonl), a harder version of GSM8k we created. Also avaliable on [Huggingface 🤗](https://huggingface.co/datasets/reasoning-machines/gsm-hard)
 ```python
 import datasets
-gsm_hard = datasets.load_dataset("reasoning-machine/gsm-hard")
+gsm_hard = datasets.load_dataset("reasoning-machines/gsm-hard")
 
 ```
 ## Installation
