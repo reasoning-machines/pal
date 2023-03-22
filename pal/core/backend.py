@@ -82,3 +82,23 @@ def chat_api(model, max_tokens, stop, prompt, temperature,
         top_p=top_p,
         n=n)
     return [choice['message']['content'] for choice in ans['choices']]
+
+
+def call_chat_gpt(messages, model='gpt-3.5-turbo', stop=None, temperature=0., top_p=1.0, max_tokens=128):
+    wait = 1
+    while True:
+        try:
+            ans = openai.ChatCompletion.create(
+                model=model,
+                max_tokens=max_tokens,
+                stop=stop,
+                messages=messages,
+                temperature=temperature,
+                top_p=top_p,
+                n=1
+            )
+            return ans.choices[0]['message']['content']
+        except openai.error.RateLimitError as e:
+            time.sleep(min(wait, 60))
+            wait *= 2
+    raise RuntimeError('Failed to call chat gpt')

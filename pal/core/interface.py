@@ -19,7 +19,7 @@ from typing import Any, Callable, List, Optional
 from collections import Counter
 
 from .runtime import GenericRuntime
-from .backend import call_gpt
+from .backend import call_gpt, call_chat_gpt
 
 
 class timeout:
@@ -137,3 +137,35 @@ class ProgramInterface:
                 results.append(exec_result)
         counter = Counter(results)
         return counter.most_common(1)[0][0]
+    
+    
+SYSTEM_MESSAGES = 'You are a helpful python programmer.'
+class ProgramChatInterface(ProgramInterface):
+    def __init__(self, *args, system_message: str = SYSTEM_MESSAGES, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.system_message = system_message
+        
+    def generate(self, prompt: str, temperature: float = 0, top_p: float = 1, max_tokens: int = 512):
+        messages =[{'role': 'system', 'content': self.system_message}, {'role': 'user', 'content': prompt}]
+        gen = call_chat_gpt(messages, model=self.model, stop=self.stop, temperature=temperature, top_p=top_p, max_tokens=max_tokens)
+        if self.verbose:
+            print(gen)
+        self.history.append(gen)
+        return self.process_generation_to_code(gen)
+        
+    def process_generation_to_code(self, gens: str):
+        if '```python' in gens:
+            gens = gens.split('```python')[1].split('```')[0]
+        elif '```' in gens:
+            gens = gens.split('```')[1].split('```')[0]
+            
+        return gens.split('\n')
+    
+    def run(self, prompt: str, time_out: float = 10, temperature: float = 0, top_p: float = 1, max_tokens: int = 512):
+        code = self.generate(prompt, temperature=temperature, top_p=top_p, max_tokens=max_tokens)
+        with timeout(time_out):
+            try:
+                exec_result = self.execute(code)
+            except Exception as e:
+                print(e)
+        return exec_result
