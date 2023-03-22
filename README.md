@@ -9,6 +9,8 @@ In PaL, Large Language Model solves reasoning problems that involve complex arit
 This repo provides an interactive implementation of PAL.
 
 ## News 📢
+[Mar 2023] We have added supports for ChatGPT APIs (e.g., gpt-3.5-turbo). We expect a smooth transition for PAL over the codex API shutdown. Checkout a beta script `scripts/gsm_chatgpt.py` for Math reasoning.
+
 [Jan 2023] We release [GSM-hard](https://github.com/reasoning-machines/pal/blob/main/datasets/gsmhardv2.jsonl), a harder version of GSM8k we created. Also avaliable on [Huggingface 🤗](https://huggingface.co/datasets/reasoning-machines/gsm-hard)
 ```python
 import datasets
@@ -49,6 +51,11 @@ We provide simple inference loops in the `scripts/` folder.
 ```
 mkdir eval_results
 python scripts/{colored_objects|gsm|date_understanding|penguin}_eval.py
+``` 
+
+We have a beta release of a **ChatGPT** dedicated script for math reasoning.
+```
+python scripts/gsm_chatgpt.py
 ``` 
 
 For running bulk inference, we used the generic prompting library [prompt-lib](https://github.com/madaan/prompt-lib) and recommend it for running CoT inferenence on all tasks used in our work.
