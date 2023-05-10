@@ -135,6 +135,11 @@ class ProgramInterface:
                     print(e)
                     continue
                 results.append(exec_result)
+        
+        if len(results) == 0:
+            print('No results was produced. A common reason is that the generated code snippet is not valid or did not return any results.')
+            return None
+        
         counter = Counter(results)
         return counter.most_common(1)[0][0]
     
