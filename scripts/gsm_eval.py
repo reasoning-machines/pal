@@ -32,7 +32,7 @@ parser.add_argument('--model', default='code-davinci-002', type=str)
 parser.add_argument('--majority_at', default=None, type=int)
 parser.add_argument('--temperature', default=0.0, type=float)
 parser.add_argument('--top_p', default=1.0, type=float)
-parser.add_argument('--max_tokens', default=256, type=int)
+parser.add_argument('--max_tokens', default=512, type=int)
 args = parser.parse_args()
 
 DATA_PATH = f'datasets/{args.dataset}.jsonl'
